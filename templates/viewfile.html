@@ -1,0 +1,40 @@
+{% extends 'dashboard.html' %}
+
+{% block addcss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='viewnote.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="view-container">
+
+    <div class="view-card">
+
+        <h2>View File</h2>
+
+        <div class="note-box">
+            <label>File Name</label>
+            <input type="text" value="{{ file.filename }}" readonly>
+        </div>
+
+        <div class="note-box">
+            <label>Uploaded On</label>
+            <input type="text" value="{{ file.created_at }}" readonly>
+        </div>
+
+        <div class="note-box">
+            <label>File Content</label>
+            <textarea rows="15" readonly>{{ file.filedata.decode('utf-8') }}</textarea>
+        </div>
+
+        <div class="button-group">
+            <a href="{{ url_for('viewallfiles') }}">
+                <button type="button" class="back-btn">Back</button>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

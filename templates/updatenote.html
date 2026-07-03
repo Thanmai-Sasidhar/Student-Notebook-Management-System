@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %} {% block addcss %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='updatenote.css') }}"
+/>
+{% endblock %} {% block content %}
+
+<div class="update-container">
+  <div class="update-card">
+    <h2>Update Note</h2>
+    <p class="subtitle">Edit your note and save the changes.</p>
+
+    <form method="POST">
+      <div class="form-group">
+        <label>Note Title</label>
+        <input
+          type="text"
+          name="title"
+          value="{{ note.title }}"
+          placeholder="Enter Note Title"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+
+        <textarea
+          name="description"
+          rows="8"
+          placeholder="Enter Description"
+          required
+        >
+{{ note.description }}</textarea
+        >
+      </div>
+
+      <div class="button-group">
+        <button type="submit" class="update-btn">Update Note</button>
+
+        <a href="{{ url_for('viewallnotes') }}">
+          <button type="button" class="cancel-btn">Cancel</button>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

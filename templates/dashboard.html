@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    {% block addcss %}{% endblock %}
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #4f46e5, #06b6d4);
+        min-height: 100vh;
+      }
+
+      /* Navbar */
+
+      .navbar {
+        background: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .logo {
+        font-size: 22px;
+        font-weight: bold;
+        color: #4f46e5;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      /* Dropdown */
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropbtn {
+        background: #4f46e5;
+        color: #fff;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .dropbtn:hover {
+        background: #4338ca;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 110%;
+        left: 0;
+        min-width: 220px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        z-index: 9999;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 14px 18px;
+        color: #333;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .dropdown-content a:hover {
+        background: #eef2ff;
+        color: #4f46e5;
+      }
+
+      .dropdown.show .dropdown-content {
+        display: block;
+      }
+
+      /* Search */
+
+      .search-box {
+        display: flex;
+      }
+
+      .search-box input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px 0 0 6px;
+        outline: none;
+      }
+
+      .search-box button {
+        padding: 10px 15px;
+        border: none;
+        background: #4f46e5;
+        color: #fff;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+      }
+
+      /* Logout */
+
+      .logout-btn {
+        background: #ef4444;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .logout-btn:hover {
+        background: #dc2626;
+      }
+
+      /* Default Content */
+
+      .content {
+        width: 90%;
+        max-width: 1000px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .content h1 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .content p {
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% with messages = get_flashed_messages() %} {% if messages %} {% for
+    message in messages %}
+    <b style="color: #4a90e2">{{message}}</b>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <nav class="navbar">
+      <div class="logo">Notes Dashboard</div>
+
+      <div class="nav-links">
+        <!-- Notes Module -->
+
+        <div class="dropdown" id="notesDropdown">
+          <button class="dropbtn" onclick="toggleDropdown('notesDropdown')">
+            Notes Module ▼
+          </button>
+
+          <div class="dropdown-content">
+            <a href="{{ url_for('addnotes') }}">Add Notes</a>
+
+            <a href="{{ url_for('viewallnotes') }}">View All Notes</a>
+
+            <a href="{{ url_for('get_excel_data') }}">Get Excel Data</a>
+          </div>
+        </div>
+
+        <!-- File Module -->
+
+        <div class="dropdown" id="fileDropdown">
+          <button class="dropbtn" onclick="toggleDropdown('fileDropdown')">
+            File Module ▼
+          </button>
+
+          <div class="dropdown-content">
+            <a href="{{ url_for('uploadfile') }}">Upload File</a>
+
+            <a href="{{ url_for('viewallfiles') }}">View All Files</a>
+          </div>
+        </div>
+
+        <!-- Search -->
+
+        <form class="search-box" action="{{ url_for('search') }}" method="POST">
+          <input type="text" name="query" placeholder="Search notes..." />
+
+          <button type="submit">Search</button>
+        </form>
+
+        <!-- Logout -->
+
+        <a href="{{ url_for('logout') }}" class="logout-btn"> Logout </a>
+      </div>
+    </nav>
+
+    {% block content %}
+
+    <div class="content">
+      <h1>Welcome to Notes Management Dashboard</h1>
+
+      <p>Manage your notes and files efficiently from one place.</p>
+    </div>
+
+    {% endblock %}
+
+    <script>
+      function toggleDropdown(id) {
+        document.querySelectorAll(".dropdown").forEach(function (drop) {
+          if (drop.id !== id) {
+            drop.classList.remove("show");
+          }
+        });
+
+        document.getElementById(id).classList.toggle("show");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.matches(".dropbtn")) {
+          document.querySelectorAll(".dropdown").forEach(function (drop) {
+            drop.classList.remove("show");
+          });
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+{% extends 'dashboard.html' %}
+
+{% block addcss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='viewnote.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="view-container">
+
+    <div class="view-card">
+
+        <h2>View Note</h2>
+
+        <div class="note-box">
+            <label>Title</label>
+
+            <input
+                type="text"
+                value="{{ note.title }}"
+                readonly
+            >
+        </div>
+
+        <div class="note-box">
+            <label>Created On</label>
+
+            <input
+                type="text"
+                value="{{ note.created_at }}"
+                readonly
+            >
+        </div>
+
+        <div class="note-box">
+            <label>Description</label>
+
+            <textarea
+                rows="10"
+                readonly>{{ note.description }}</textarea>
+        </div>
+
+        <div class="button-group">
+            <a href="{{ url_for('viewallnotes') }}">
+                <button type="button" class="back-btn">
+                    Back
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
